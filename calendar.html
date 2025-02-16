@@ -18,11 +18,121 @@
     </nav>
 
     <main class="container">
-        <h1>Calendar Integration</h1>
-        <div class="calendar-placeholder">
-            <p>Connect your calendar to visualize study sessions</p>
-            <button class="connect-button">Connect Calendar</button>
+        <div class="calendar-header">
+            <h1>Weekly Schedule</h1>
+            <div class="calendar-actions">
+                <button class="btn btn-primary" onclick="showImportModal()">Import Calendar</button>
+                <button class="btn btn-primary" onclick="showExportModal()">Export Calendar</button>
+            </div>
+        </div>
+
+        <!-- Import Modal -->
+        <div id="importModal" class="modal">
+            <div class="modal-content">
+                <h2>Import Calendar</h2>
+                <div class="modal-options">
+                    <button class="btn" onclick="handleImportOption('upload')">Upload Calendar</button>
+                    <button class="btn" onclick="handleImportOption('url')">Paste URL</button>
+                </div>
+                <div id="importUrlInput" class="modal-input-container" style="display: none;">
+                    <input type="text" id="importUrl" placeholder="Paste calendar URL here">
+                    <button class="btn btn-primary" onclick="importFromUrl()">Import</button>
+                </div>
+                <div id="importFileInput" class="modal-input-container" style="display: none;">
+                    <input type="file" id="calendarFile" accept=".ics,.csv">
+                    <button class="btn btn-primary" onclick="importFromFile()">Upload</button>
+                </div>
+                <button class="btn btn-close" onclick="closeModal('importModal')">Close</button>
+            </div>
+        </div>
+
+        <!-- Export Modal -->
+        <div id="exportModal" class="modal">
+            <div class="modal-content">
+                <h2>Export Calendar</h2>
+                <div class="modal-options">
+                    <button class="btn" onclick="handleExportOption('download')">Download Calendar</button>
+                    <button class="btn" onclick="handleExportOption('url')">Get URL</button>
+                </div>
+                <div id="exportUrlOutput" class="modal-input-container" style="display: none;">
+                    <input type="text" id="exportUrl" readonly>
+                    <button class="btn btn-primary" onclick="copyUrl()">Copy URL</button>
+                </div>
+                <button class="btn btn-close" onclick="closeModal('exportModal')">Close</button>
+            </div>
+        </div>
+        <div class="weekly-calendar">
+            <div class="time-column">
+                <div class="time-slot">8:00 AM</div>
+                <div class="time-slot">9:00 AM</div>
+                <div class="time-slot">10:00 AM</div>
+                <div class="time-slot">11:00 AM</div>
+                <div class="time-slot">12:00 PM</div>
+                <div class="time-slot">1:00 PM</div>
+                <div class="time-slot">2:00 PM</div>
+                <div class="time-slot">3:00 PM</div>
+                <div class="time-slot">4:00 PM</div>
+                <div class="time-slot">5:00 PM</div>
+            </div>
+            <div class="calendar-grid">
+                <div class="day-column">
+                    <div class="day-header">Monday</div>
+                    <div class="class-block math" style="grid-row: 2 / 4;">
+                        <h3>Calculus II</h3>
+                        <p>9:00 - 10:30 AM</p>
+                        <p>Room 301</p>
+                    </div>
+                    <div class="class-block physics" style="grid-row: 6 / 8;">
+                        <h3>Physics</h3>
+                        <p>1:00 - 2:30 PM</p>
+                        <p>Room 205</p>
+                    </div>
+                </div>
+                <div class="day-column">
+                    <div class="day-header">Tuesday</div>
+                    <div class="class-block cs" style="grid-row: 3 / 5;">
+                        <h3>Computer Science</h3>
+                        <p>10:00 - 11:30 AM</p>
+                        <p>Room 405</p>
+                    </div>
+                </div>
+                <div class="day-column">
+                    <div class="day-header">Wednesday</div>
+                    <div class="class-block math" style="grid-row: 2 / 4;">
+                        <h3>Calculus II</h3>
+                        <p>9:00 - 10:30 AM</p>
+                        <p>Room 301</p>
+                    </div>
+                    <div class="class-block physics" style="grid-row: 6 / 8;">
+                        <h3>Physics</h3>
+                        <p>1:00 - 2:30 PM</p>
+                        <p>Room 205</p>
+                    </div>
+                </div>
+                <div class="day-column">
+                    <div class="day-header">Thursday</div>
+                    <div class="class-block cs" style="grid-row: 3 / 5;">
+                        <h3>Computer Science</h3>
+                        <p>10:00 - 11:30 AM</p>
+                        <p>Room 405</p>
+                    </div>
+                    <div class="class-block english" style="grid-row: 8 / 10;">
+                        <h3>English Literature</h3>
+                        <p>3:00 - 4:30 PM</p>
+                        <p>Room 102</p>
+                    </div>
+                </div>
+                <div class="day-column">
+                    <div class="day-header">Friday</div>
+                    <div class="class-block english" style="grid-row: 4 / 6;">
+                        <h3>English Literature</h3>
+                        <p>11:00 - 12:30 PM</p>
+                        <p>Room 102</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
+    <script src="./js/app.js"></script>
 </body>
 </html>
