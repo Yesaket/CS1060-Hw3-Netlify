@@ -163,24 +163,271 @@ function addSession() {
     }
 }
 
+// Sample extracted class data
+const sampleClass = {
+    code: 'CS 101',
+    name: 'Introduction to Computer Science',
+    instructor: 'Dr. Sarah Johnson',
+    schedule: {
+        days: ['Monday', 'Wednesday'],
+        time: '10:00 AM - 11:20 AM',
+        location: 'Tech Building Room 302',
+        firstDay: '2025-01-13',
+        lastDay: '2025-05-02',
+        term: 'Spring 2025'
+    },
+    assignments: [
+        {
+            type: 'Quiz',
+            title: 'Variables and Data Types Quiz',
+            date: '2025-03-10',
+            description: 'Quiz covering Chapter 1-2 material',
+            estimatedTime: '1 hour'
+        },
+        {
+            type: 'Assignment',
+            title: 'Programming Assignment 1',
+            date: '2025-03-15',
+            description: 'Basic programming concepts implementation',
+            estimatedTime: '4 hours'
+        },
+        {
+            type: 'Reading',
+            title: 'Introduction to Algorithms',
+            date: '2025-03-08',
+            description: 'Read Chapter 3 before class',
+            estimatedTime: '2 hours'
+        },
+        {
+            type: 'Exam',
+            title: 'Midterm Examination',
+            date: '2025-04-05',
+            description: 'Covers all material from weeks 1-7',
+            estimatedTime: '3 hours'
+        }
+    ]
+};
+
+// Format date to a more readable format
+function formatDate(dateStr) {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('en-US', {
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
+    });
+}
+
+// Display extracted assignments
+function displayExtractedAssignments(classInfo) {
+    const modal = document.getElementById('classesModal');
+    const modalContent = modal.querySelector('.modal-content');
+
+    // Sort assignments by date
+    const sortedAssignments = [...classInfo.assignments].sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    modalContent.innerHTML = `
+        <div class="modal-header assignments-header">
+            <div>
+                <h2>${classInfo.code} - ${classInfo.name}</h2>
+                <p class="subtitle">${classInfo.instructor}</p>
+            </div>
+            <span class="close-modal">&times;</span>
+        </div>
+        <div class="modal-body assignments-body">
+            <div class="class-schedule">
+                <div class="section-header">
+                    <h3>Class Schedule</h3>
+                    <button class="edit-button" id="editClassSchedule">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
+                        </svg>
+                        Edit
+                    </button>
+                </div>
+                <div class="schedule-grid">
+                    <div class="schedule-item">
+                        <span class="schedule-label">Term</span>
+                        <span class="schedule-value">${classInfo.schedule.term}</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-label">Days</span>
+                        <span class="schedule-value">${classInfo.schedule.days.join(', ')}</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-label">Time</span>
+                        <span class="schedule-value">${classInfo.schedule.time}</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-label">Location</span>
+                        <span class="schedule-value">${classInfo.schedule.location}</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-label">First Day</span>
+                        <span class="schedule-value">${formatDate(classInfo.schedule.firstDay)}</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-label">Last Day</span>
+                        <span class="schedule-value">${formatDate(classInfo.schedule.lastDay)}</span>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <button id="addClassSchedule" class="secondary-button">Add Class Schedule to Calendar</button>
+                    <span id="scheduleConfirmation" style="display: none; color: green;">Added to calendar!</span>
+                </div>
+            </div>
+            <div class="section-divider"></div>
+            <div class="assignments-section">
+                <div class="section-header">
+                    <h3>Tasks & Assignments</h3>
+                    <button class="edit-button" id="editAssignments">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
+                        </svg>
+                        Edit
+                    </button>
+                </div>
+                <div class="assignments-list">
+                    ${sortedAssignments.map(assignment => `
+                        <div class="assignment-item">
+                            <label class="assignment-checkbox">
+                                <input type="checkbox" checked>
+                                <div class="assignment-content">
+                                    <div class="assignment-main">
+                                        <h4>${assignment.title}</h4>
+                                        <span class="assignment-meta">
+                                            <span class="badge ${assignment.type.toLowerCase()}">${assignment.type}</span>
+                                            <span class="due-date">Due: ${formatDate(assignment.date)}</span>
+                                            <span class="estimated-time">${assignment.estimatedTime}</span>
+                                        </span>
+                                    </div>
+                                    <p class="assignment-description">${assignment.description}</p>
+                                </div>
+                            </label>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="modal-actions">
+                    <button id="addToCalendar" class="primary-button">Add Selected Tasks to Calendar</button>
+                </div>
+            </div>
+        </div>
+    `;
+
+    modal.style.display = 'block';
+
+    // Close modal when clicking the X button
+    const closeBtn = modalContent.querySelector('.close-modal');
+    closeBtn.onclick = () => modal.style.display = 'none';
+
+    // Close modal when clicking outside
+    window.onclick = (event) => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    };
+
+    // Handle adding tasks to calendar
+    const addButton = modalContent.querySelector('#addToCalendar');
+    addButton.addEventListener('click', () => {
+        const selectedTasks = Array.from(modalContent.querySelectorAll('input[type="checkbox"]:checked'))
+            .map(checkbox => {
+                const item = checkbox.closest('.assignment-item');
+                return {
+                    title: item.querySelector('h4').textContent,
+                    date: item.querySelector('.due-date').textContent.replace('Due: ', ''),
+                    type: item.querySelector('.badge').textContent,
+                    description: item.querySelector('.assignment-description').textContent,
+                    estimatedTime: item.querySelector('.estimated-time').textContent
+                };
+            });
+        
+        // Here you would integrate with your calendar system
+        console.log('Adding tasks:', selectedTasks);
+        modal.style.display = 'none';
+        document.getElementById('uploadStatus').textContent = 'Tasks successfully added to your calendar!';
+        document.getElementById('uploadStatus').style.color = '#16a34a';
+    });
+}
+
+// Create class card element
+function createClassCard(classInfo) {
+    const card = document.createElement('div');
+    card.className = 'class-card';
+    card.innerHTML = `
+        <div class="class-header">
+            <h3>${classInfo.code} - ${classInfo.name}</h3>
+            <span class="semester-badge">${classInfo.semester}</span>
+        </div>
+        <div class="class-details">
+            <p><strong>Instructor:</strong> ${classInfo.instructor}</p>
+            <p><strong>Schedule:</strong> ${classInfo.schedule.days.join(', ')}</p>
+            <p><strong>Time:</strong> ${classInfo.schedule.time}</p>
+            <p><strong>Location:</strong> ${classInfo.schedule.location}</p>
+        </div>
+        <button class="view-assignments-btn">View Assignments & Due Dates</button>
+    `;
+
+    // Add click handler for viewing assignments
+    card.querySelector('.view-assignments-btn').onclick = (e) => {
+        e.stopPropagation(); // Prevent event from bubbling up
+        showClassAssignments(classInfo);
+    };
+
+    return card;
+}
+
+// Filter classes
+function filterClasses(searchText, semester) {
+    return sampleClasses.filter(classInfo => {
+        const matchesSearch = searchText === '' || 
+            classInfo.name.toLowerCase().includes(searchText.toLowerCase()) ||
+            classInfo.code.toLowerCase().includes(searchText.toLowerCase());
+        const matchesSemester = semester === 'all' || classInfo.semester === semester;
+        return matchesSearch && matchesSemester;
+    });
+}
+
+// Update classes list
+function updateClassesList(searchText = '', semester = 'all') {
+    const classesList = document.getElementById('classesList');
+    const filteredClasses = filterClasses(searchText, semester);
+    
+    classesList.innerHTML = '';
+    if (filteredClasses.length === 0) {
+        classesList.innerHTML = '<p class="no-results">No classes found matching your criteria.</p>';
+        return;
+    }
+    
+    filteredClasses.forEach(classInfo => {
+        classesList.appendChild(createClassCard(classInfo));
+    });
+}
+
 // File upload handling
 function initUploadPage() {
+    // Add event listener for Add Class Schedule button
+    document.addEventListener('click', function(e) {
+        if (e.target && e.target.id === 'addClassSchedule') {
+            const confirmation = document.getElementById('scheduleConfirmation');
+            if (confirmation) {
+                confirmation.style.display = 'inline';
+            }
+        }
+    });
     const fileInput = document.querySelector('.file-input');
     const submitBtn = document.getElementById('submitBtn');
     const statusDiv = document.getElementById('uploadStatus');
 
     fileInput.addEventListener('change', (e) => {
-        // Enable submit button when file is selected
         submitBtn.disabled = !e.target.files.length;
     });
 
     submitBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        statusDiv.textContent = 'Feature coming soon! We\'ll notify you when syllabus processing is available.';
-        statusDiv.style.color = '#4a90e2';
-        // Clear file input and disable button
-        fileInput.value = '';
-        submitBtn.disabled = true;
+        // Show the modal with extracted assignments
+        displayExtractedAssignments(sampleClass);
     });
 }
 
