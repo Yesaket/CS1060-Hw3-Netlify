@@ -22,7 +22,12 @@
         <div class="upload-section">
             <p>Drag and drop your syllabus file here or</p>
             <input type="file" class="file-input" accept=".pdf,.doc,.docx">
+            <div class="upload-controls">
+                <button id="submitBtn" class="submit-button" disabled>Process Syllabus</button>
+                <div id="uploadStatus" class="status-message"></div>
+            </div>
         </div>
     </main>
+    <script src="./js/app.js"></script>
 </body>
 </html>

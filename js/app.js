@@ -57,7 +57,29 @@ function addSession() {
     }
 }
 
+// File upload handling
+function initUploadPage() {
+    const fileInput = document.querySelector('.file-input');
+    const submitBtn = document.getElementById('submitBtn');
+    const statusDiv = document.getElementById('uploadStatus');
+
+    fileInput.addEventListener('change', (e) => {
+        // Enable submit button when file is selected
+        submitBtn.disabled = !e.target.files.length;
+    });
+
+    submitBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        statusDiv.textContent = 'Feature coming soon! We\'ll notify you when syllabus processing is available.';
+        statusDiv.style.color = '#4a90e2';
+        // Clear file input and disable button
+        fileInput.value = '';
+        submitBtn.disabled = true;
+    });
+}
+
 // Initialize appropriate page components
 document.addEventListener('DOMContentLoaded', () => {
     initHomePage();
+    initUploadPage();
 });
