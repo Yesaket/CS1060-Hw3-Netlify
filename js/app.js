@@ -431,8 +431,115 @@ function initUploadPage() {
     });
 }
 
+// Modal Functions
+function showImportModal() {
+    const modal = document.getElementById('importModal');
+    modal.style.display = 'flex';
+}
+
+function showExportModal() {
+    const modal = document.getElementById('exportModal');
+    modal.style.display = 'flex';
+}
+
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    modal.style.display = 'none';
+    
+    // Reset the modal state
+    if (modalId === 'importModal') {
+        document.getElementById('importUrlInput').style.display = 'none';
+        document.getElementById('importFileInput').style.display = 'none';
+    } else if (modalId === 'exportModal') {
+        document.getElementById('exportUrlOutput').style.display = 'none';
+    }
+}
+
+function handleImportOption(option) {
+    const urlInput = document.getElementById('importUrlInput');
+    const fileInput = document.getElementById('importFileInput');
+    
+    if (option === 'url') {
+        urlInput.style.display = 'flex';
+        fileInput.style.display = 'none';
+    } else {
+        urlInput.style.display = 'none';
+        fileInput.style.display = 'flex';
+    }
+}
+
+function handleExportOption(option) {
+    const urlOutput = document.getElementById('exportUrlOutput');
+    
+    if (option === 'url') {
+        urlOutput.style.display = 'flex';
+        // Generate a sample URL - in a real app, this would be your actual calendar sharing URL
+        document.getElementById('exportUrl').value = 'https://example.com/calendar/share/abc123';
+    } else {
+        // Trigger calendar download
+        downloadCalendar();
+    }
+}
+
+function importFromUrl() {
+    const url = document.getElementById('importUrl').value;
+    // Here you would implement the actual calendar import logic
+    console.log('Importing calendar from URL:', url);
+    closeModal('importModal');
+}
+
+function importFromFile() {
+    const file = document.getElementById('calendarFile').files[0];
+    if (file) {
+        // Here you would implement the actual file import logic
+        console.log('Importing calendar from file:', file.name);
+        closeModal('importModal');
+    }
+}
+
+function downloadCalendar() {
+    // Here you would implement the actual calendar download logic
+    console.log('Downloading calendar...');
+    // For demonstration, create a sample calendar file download
+    const dummyContent = 'BEGIN:VCALENDAR\nVERSION:2.0\nEND:VCALENDAR';
+    const blob = new Blob([dummyContent], { type: 'text/calendar' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'calendar.ics';
+    a.click();
+    window.URL.revokeObjectURL(url);
+}
+
+function copyUrl() {
+    const urlInput = document.getElementById('exportUrl');
+    urlInput.select();
+    document.execCommand('copy');
+    // Show feedback (you might want to add a toast notification here)
+    console.log('URL copied to clipboard');
+}
+
+// Close modals when clicking outside
+window.onclick = function(event) {
+    if (event.target.classList.contains('modal')) {
+        event.target.style.display = 'none';
+    }
+};
+
+// Initialize calendar page
+function initCalendarPage() {
+    // Add any calendar-specific initialization here
+    console.log('Calendar page initialized');
+}
+
 // Initialize appropriate page components
 document.addEventListener('DOMContentLoaded', () => {
-    initHomePage();
-    initUploadPage();
+    const currentPage = window.location.pathname;
+    if (currentPage.includes('index.html')) {
+        initHomePage();
+    } else if (currentPage.includes('upload.html')) {
+        initUploadPage();
+    } else if (currentPage.includes('calendar.html')) {
+        initCalendarPage();
+    }
 });
