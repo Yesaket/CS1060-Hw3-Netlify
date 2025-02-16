@@ -310,6 +310,123 @@ h1 {
     overflow-y: auto;
 }
 
+.assignments-modal {
+    max-width: 900px;
+}
+
+.assignments-header {
+    background: var(--primary-color);
+    color: white;
+    border-radius: 12px 12px 0 0;
+}
+
+.assignments-header h2 {
+    background: none;
+    -webkit-text-fill-color: white;
+    margin-bottom: 0.25rem;
+}
+
+.assignments-header .subtitle {
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+    font-size: 0.875rem;
+}
+
+.assignments-header .close-modal {
+    color: white;
+}
+
+.assignments-body {
+    padding: 1.5rem;
+}
+
+.assignments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.assignment-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.assignment-type {
+    color: var(--primary-color);
+    font-size: 1.25rem;
+    margin: 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--primary-light);
+}
+
+.assignment-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.assignment-card {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+    transition: all 0.2s ease;
+}
+
+.assignment-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-color);
+}
+
+.assignment-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.assignment-card h4 {
+    margin: 0;
+    color: var(--primary-color);
+    font-size: 1rem;
+}
+
+.due-date {
+    color: var(--text-light);
+    font-size: 0.75rem;
+    white-space: nowrap;
+}
+
+.assignment-description {
+    color: var(--text-light);
+    font-size: 0.875rem;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.view-assignments-btn {
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    background: transparent;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.view-assignments-btn:hover {
+    background: var(--primary-color);
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+}
+
 .modal-header {
     padding: 1.5rem;
     border-bottom: 1px solid var(--border-color);

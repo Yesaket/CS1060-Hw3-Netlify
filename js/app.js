@@ -175,7 +175,33 @@ const sampleClasses = [
             time: '10:00 AM - 11:20 AM',
             location: 'Tech Building Room 302'
         },
-        semester: 'spring2025'
+        semester: 'spring2025',
+        assignments: [
+            {
+                type: 'Quiz',
+                title: 'Variables and Data Types Quiz',
+                date: '2025-03-10',
+                description: 'Quiz covering Chapter 1-2 material'
+            },
+            {
+                type: 'Assignment',
+                title: 'Programming Assignment 1',
+                date: '2025-03-15',
+                description: 'Basic programming concepts implementation'
+            },
+            {
+                type: 'Reading',
+                title: 'Introduction to Algorithms',
+                date: '2025-03-08',
+                description: 'Read Chapter 3 before class'
+            },
+            {
+                type: 'Exam',
+                title: 'Midterm Examination',
+                date: '2025-04-05',
+                description: 'Covers all material from weeks 1-7'
+            }
+        ]
     },
     {
         id: 2,
@@ -187,7 +213,33 @@ const sampleClasses = [
             time: '2:00 PM - 3:20 PM',
             location: 'Science Center Room 405'
         },
-        semester: 'spring2025'
+        semester: 'spring2025',
+        assignments: [
+            {
+                type: 'Quiz',
+                title: 'Integration Techniques Quiz',
+                date: '2025-03-12',
+                description: 'Quiz on various integration methods'
+            },
+            {
+                type: 'Assignment',
+                title: 'Problem Set 2',
+                date: '2025-03-18',
+                description: 'Problems from Chapter 4: Series and Sequences'
+            },
+            {
+                type: 'Reading',
+                title: 'Taylor Series',
+                date: '2025-03-20',
+                description: 'Read Chapter 5.1-5.3 before class'
+            },
+            {
+                type: 'Exam',
+                title: 'Exam 1',
+                date: '2025-04-10',
+                description: 'Covering integration techniques and series'
+            }
+        ]
     },
     {
         id: 3,
@@ -199,9 +251,104 @@ const sampleClasses = [
             time: '1:00 PM - 1:50 PM',
             location: 'Liberal Arts Building Room 201'
         },
-        semester: 'spring2025'
+        semester: 'spring2025',
+        assignments: [
+            {
+                type: 'Quiz',
+                title: 'Reading Comprehension Quiz',
+                date: '2025-03-05',
+                description: 'Quiz on The Great Gatsby chapters 1-3'
+            },
+            {
+                type: 'Assignment',
+                title: 'Literary Analysis Essay',
+                date: '2025-03-25',
+                description: '1500-word analysis of modernist themes'
+            },
+            {
+                type: 'Reading',
+                title: 'The Great Gatsby',
+                date: '2025-03-03',
+                description: 'Complete chapters 4-6 for discussion'
+            },
+            {
+                type: 'Exam',
+                title: 'Midterm Paper',
+                date: '2025-04-15',
+                description: 'Comparative analysis of two novels'
+            }
+        ]
     }
 ];
+
+// Format date to a more readable format
+function formatDate(dateStr) {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('en-US', {
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric'
+    });
+}
+
+// Show class assignments modal
+function showClassAssignments(classInfo) {
+    const modal = document.getElementById('assignmentsModal');
+    const modalContent = document.getElementById('assignmentsModalContent');
+
+    // Group assignments by type
+    const assignmentsByType = classInfo.assignments.reduce((acc, assignment) => {
+        if (!acc[assignment.type]) {
+            acc[assignment.type] = [];
+        }
+        acc[assignment.type].push(assignment);
+        return acc;
+    }, {});
+
+    modalContent.innerHTML = `
+        <div class="modal-header assignments-header">
+            <div>
+                <h2>${classInfo.code} - ${classInfo.name}</h2>
+                <p class="subtitle">${classInfo.instructor}</p>
+            </div>
+            <span class="close-modal">&times;</span>
+        </div>
+        <div class="modal-body assignments-body">
+            <div class="assignments-grid">
+                ${Object.entries(assignmentsByType).map(([type, assignments]) => `
+                    <div class="assignment-section">
+                        <h3 class="assignment-type">${type}s</h3>
+                        <div class="assignment-list">
+                            ${assignments.map(assignment => `
+                                <div class="assignment-card">
+                                    <div class="assignment-card-header">
+                                        <h4>${assignment.title}</h4>
+                                        <span class="due-date">Due: ${formatDate(assignment.date)}</span>
+                                    </div>
+                                    <p class="assignment-description">${assignment.description}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `;
+
+    modal.style.display = 'block';
+
+    // Close modal when clicking the X button
+    const closeBtn = modalContent.querySelector('.close-modal');
+    closeBtn.onclick = () => modal.style.display = 'none';
+
+    // Close modal when clicking outside
+    window.onclick = (event) => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    };
+}
 
 // Create class card element
 function createClassCard(classInfo) {
@@ -218,7 +365,15 @@ function createClassCard(classInfo) {
             <p><strong>Time:</strong> ${classInfo.schedule.time}</p>
             <p><strong>Location:</strong> ${classInfo.schedule.location}</p>
         </div>
+        <button class="view-assignments-btn">View Assignments & Due Dates</button>
     `;
+
+    // Add click handler for viewing assignments
+    card.querySelector('.view-assignments-btn').onclick = (e) => {
+        e.stopPropagation(); // Prevent event from bubbling up
+        showClassAssignments(classInfo);
+    };
+
     return card;
 }
 
