@@ -1,4 +1,36 @@
-// Sample tasks for demonstration
+// Study session functionality
+function showComingSoonMessage() {
+    const modal = document.getElementById('comingSoonModal');
+    modal.style.display = 'flex';
+}
+
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    modal.style.display = 'none';
+}
+
+// Initialize planner page
+function initPlannerPage() {
+    // Set minimum date-time to current time
+    const now = new Date();
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+    document.getElementById('sessionTime').min = now.toISOString().slice(0, 16);
+
+    // Override the Add Session button click
+    const addButton = document.querySelector('.session-form .btn-primary');
+    if (addButton) {
+        addButton.onclick = showComingSoonMessage;
+    }
+}
+
+// Close modals when clicking outside
+window.onclick = function(event) {
+    if (event.target.classList.contains('modal')) {
+        event.target.style.display = 'none';
+    }
+};
+
+// Initialize appropriate page components
 const sampleTasks = [
     {
         id: 1,
@@ -535,11 +567,15 @@ function initCalendarPage() {
 // Initialize appropriate page components
 document.addEventListener('DOMContentLoaded', () => {
     const currentPage = window.location.pathname;
-    if (currentPage.includes('index.html')) {
+    
+    // Initialize home page if we're at root URL or index.html
+    if (currentPage === '/' || currentPage.endsWith('/') || currentPage.includes('index.html')) {
         initHomePage();
     } else if (currentPage.includes('upload.html')) {
         initUploadPage();
     } else if (currentPage.includes('calendar.html')) {
         initCalendarPage();
+    } else if (currentPage.includes('planner.html')) {
+        initPlannerPage();
     }
 });

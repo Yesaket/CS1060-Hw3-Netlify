@@ -18,15 +18,43 @@
     </nav>
 
     <main class="container">
-        <h1>Study Planner</h1>
+        <h1>Study Session Planner</h1>
         <div class="planner-interface">
             <div class="session-form">
-                <input type="text" placeholder="Subject" id="sessionSubject">
-                <input type="datetime-local" id="sessionTime">
-                <input type="number" placeholder="Duration (minutes)" id="sessionDuration">
-                <button onclick="addSession()">Add Session</button>
+                <div class="form-group">
+                    <label for="sessionSubject">Subject</label>
+                    <input type="text" id="sessionSubject" placeholder="e.g., Calculus II">
+                </div>
+                <div class="form-group">
+                    <label for="sessionTime">Start Time</label>
+                    <input type="datetime-local" id="sessionTime">
+                </div>
+                <div class="form-group">
+                    <label for="sessionDuration">Duration (minutes)</label>
+                    <input type="number" id="sessionDuration" placeholder="e.g., 60" min="15" step="15">
+                </div>
+                <button class="btn btn-primary" onclick="addSession()">Add Study Session</button>
             </div>
-            <div class="session-list" id="sessionList"></div>
+            
+            <div class="sessions-container">
+                <h2>Planned Sessions</h2>
+                <div class="session-list" id="sessionList">
+                    <div class="session-item template">
+                        <h3>Calculus II</h3>
+                        <p>📅 Mon, Feb 19, 2:00 PM</p>
+                        <p>⏱️ 90 minutes</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coming Soon Modal -->
+            <div id="comingSoonModal" class="modal">
+                <div class="modal-content coming-soon-modal">
+                    <h2>🚀 Coming Soon!</h2>
+                    <p>We're working hard to bring you study session planning functionality. This feature will be available in the next update!</p>
+                    <button class="btn btn-primary" onclick="closeModal('comingSoonModal')">Got it!</button>
+                </div>
+            </div>
         </div>
     </main>
 
