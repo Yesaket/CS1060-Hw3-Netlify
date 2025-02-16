@@ -272,7 +272,10 @@ function displayExtractedAssignments(classInfo) {
                         <span class="schedule-value">${formatDate(classInfo.schedule.lastDay)}</span>
                     </div>
                 </div>
-                <button id="addClassSchedule" class="secondary-button">Add Class Schedule to Calendar</button>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <button id="addClassSchedule" class="secondary-button">Add Class Schedule to Calendar</button>
+                    <span id="scheduleConfirmation" style="display: none; color: green;">Added to calendar!</span>
+                </div>
             </div>
             <div class="section-divider"></div>
             <div class="assignments-section">
@@ -404,6 +407,15 @@ function updateClassesList(searchText = '', semester = 'all') {
 
 // File upload handling
 function initUploadPage() {
+    // Add event listener for Add Class Schedule button
+    document.addEventListener('click', function(e) {
+        if (e.target && e.target.id === 'addClassSchedule') {
+            const confirmation = document.getElementById('scheduleConfirmation');
+            if (confirmation) {
+                confirmation.style.display = 'inline';
+            }
+        }
+    });
     const fileInput = document.querySelector('.file-input');
     const submitBtn = document.getElementById('submitBtn');
     const statusDiv = document.getElementById('uploadStatus');
