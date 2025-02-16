@@ -163,24 +163,148 @@ function addSession() {
     }
 }
 
+// Sample extracted classes data
+const sampleClasses = [
+    {
+        id: 1,
+        code: 'CS 101',
+        name: 'Introduction to Computer Science',
+        instructor: 'Dr. Sarah Johnson',
+        schedule: {
+            days: ['Monday', 'Wednesday'],
+            time: '10:00 AM - 11:20 AM',
+            location: 'Tech Building Room 302'
+        },
+        semester: 'spring2025'
+    },
+    {
+        id: 2,
+        code: 'MATH 201',
+        name: 'Calculus II',
+        instructor: 'Prof. Michael Chen',
+        schedule: {
+            days: ['Tuesday', 'Thursday'],
+            time: '2:00 PM - 3:20 PM',
+            location: 'Science Center Room 405'
+        },
+        semester: 'spring2025'
+    },
+    {
+        id: 3,
+        code: 'ENG 215',
+        name: 'Contemporary Literature',
+        instructor: 'Dr. Emily Martinez',
+        schedule: {
+            days: ['Monday', 'Wednesday', 'Friday'],
+            time: '1:00 PM - 1:50 PM',
+            location: 'Liberal Arts Building Room 201'
+        },
+        semester: 'spring2025'
+    }
+];
+
+// Create class card element
+function createClassCard(classInfo) {
+    const card = document.createElement('div');
+    card.className = 'class-card';
+    card.innerHTML = `
+        <div class="class-header">
+            <h3>${classInfo.code} - ${classInfo.name}</h3>
+            <span class="semester-badge">${classInfo.semester}</span>
+        </div>
+        <div class="class-details">
+            <p><strong>Instructor:</strong> ${classInfo.instructor}</p>
+            <p><strong>Schedule:</strong> ${classInfo.schedule.days.join(', ')}</p>
+            <p><strong>Time:</strong> ${classInfo.schedule.time}</p>
+            <p><strong>Location:</strong> ${classInfo.schedule.location}</p>
+        </div>
+    `;
+    return card;
+}
+
+// Filter classes
+function filterClasses(searchText, semester) {
+    return sampleClasses.filter(classInfo => {
+        const matchesSearch = searchText === '' || 
+            classInfo.name.toLowerCase().includes(searchText.toLowerCase()) ||
+            classInfo.code.toLowerCase().includes(searchText.toLowerCase());
+        const matchesSemester = semester === 'all' || classInfo.semester === semester;
+        return matchesSearch && matchesSemester;
+    });
+}
+
+// Update classes list
+function updateClassesList(searchText = '', semester = 'all') {
+    const classesList = document.getElementById('classesList');
+    const filteredClasses = filterClasses(searchText, semester);
+    
+    classesList.innerHTML = '';
+    if (filteredClasses.length === 0) {
+        classesList.innerHTML = '<p class="no-results">No classes found matching your criteria.</p>';
+        return;
+    }
+    
+    filteredClasses.forEach(classInfo => {
+        classesList.appendChild(createClassCard(classInfo));
+    });
+}
+
 // File upload handling
 function initUploadPage() {
     const fileInput = document.querySelector('.file-input');
     const submitBtn = document.getElementById('submitBtn');
     const statusDiv = document.getElementById('uploadStatus');
+    const modal = document.getElementById('classesModal');
+    const closeBtn = modal.querySelector('.close-modal');
+    const searchInput = document.getElementById('classSearch');
+    const semesterFilter = document.getElementById('semesterFilter');
+    const confirmBtn = document.getElementById('confirmClasses');
+    const editBtn = document.getElementById('editClasses');
 
     fileInput.addEventListener('change', (e) => {
-        // Enable submit button when file is selected
         submitBtn.disabled = !e.target.files.length;
     });
 
     submitBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        statusDiv.textContent = 'Feature coming soon! We\'ll notify you when syllabus processing is available.';
-        statusDiv.style.color = '#4a90e2';
-        // Clear file input and disable button
+        // Show the modal with extracted classes
+        modal.style.display = 'block';
+        updateClassesList();
+    });
+
+    // Close modal when clicking X button
+    closeBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    // Close modal when clicking outside
+    window.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+
+    // Handle search and filter
+    searchInput.addEventListener('input', (e) => {
+        updateClassesList(e.target.value, semesterFilter.value);
+    });
+
+    semesterFilter.addEventListener('change', (e) => {
+        updateClassesList(searchInput.value, e.target.value);
+    });
+
+    // Handle confirm and edit buttons
+    confirmBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+        statusDiv.textContent = 'Classes successfully added to your calendar!';
+        statusDiv.style.color = '#16a34a';
         fileInput.value = '';
         submitBtn.disabled = true;
+    });
+
+    editBtn.addEventListener('click', () => {
+        statusDiv.textContent = 'Edit mode enabled. Click on any class to modify its details.';
+        statusDiv.style.color = '#4f46e5';
     });
 }
 
