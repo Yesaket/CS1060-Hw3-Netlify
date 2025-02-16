@@ -163,123 +163,50 @@ function addSession() {
     }
 }
 
-// Sample extracted classes data
-const sampleClasses = [
-    {
-        id: 1,
-        code: 'CS 101',
-        name: 'Introduction to Computer Science',
-        instructor: 'Dr. Sarah Johnson',
-        schedule: {
-            days: ['Monday', 'Wednesday'],
-            time: '10:00 AM - 11:20 AM',
-            location: 'Tech Building Room 302'
-        },
-        semester: 'spring2025',
-        assignments: [
-            {
-                type: 'Quiz',
-                title: 'Variables and Data Types Quiz',
-                date: '2025-03-10',
-                description: 'Quiz covering Chapter 1-2 material'
-            },
-            {
-                type: 'Assignment',
-                title: 'Programming Assignment 1',
-                date: '2025-03-15',
-                description: 'Basic programming concepts implementation'
-            },
-            {
-                type: 'Reading',
-                title: 'Introduction to Algorithms',
-                date: '2025-03-08',
-                description: 'Read Chapter 3 before class'
-            },
-            {
-                type: 'Exam',
-                title: 'Midterm Examination',
-                date: '2025-04-05',
-                description: 'Covers all material from weeks 1-7'
-            }
-        ]
+// Sample extracted class data
+const sampleClass = {
+    code: 'CS 101',
+    name: 'Introduction to Computer Science',
+    instructor: 'Dr. Sarah Johnson',
+    schedule: {
+        days: ['Monday', 'Wednesday'],
+        time: '10:00 AM - 11:20 AM',
+        location: 'Tech Building Room 302',
+        firstDay: '2025-01-13',
+        lastDay: '2025-05-02',
+        term: 'Spring 2025'
     },
-    {
-        id: 2,
-        code: 'MATH 201',
-        name: 'Calculus II',
-        instructor: 'Prof. Michael Chen',
-        schedule: {
-            days: ['Tuesday', 'Thursday'],
-            time: '2:00 PM - 3:20 PM',
-            location: 'Science Center Room 405'
+    assignments: [
+        {
+            type: 'Quiz',
+            title: 'Variables and Data Types Quiz',
+            date: '2025-03-10',
+            description: 'Quiz covering Chapter 1-2 material',
+            estimatedTime: '1 hour'
         },
-        semester: 'spring2025',
-        assignments: [
-            {
-                type: 'Quiz',
-                title: 'Integration Techniques Quiz',
-                date: '2025-03-12',
-                description: 'Quiz on various integration methods'
-            },
-            {
-                type: 'Assignment',
-                title: 'Problem Set 2',
-                date: '2025-03-18',
-                description: 'Problems from Chapter 4: Series and Sequences'
-            },
-            {
-                type: 'Reading',
-                title: 'Taylor Series',
-                date: '2025-03-20',
-                description: 'Read Chapter 5.1-5.3 before class'
-            },
-            {
-                type: 'Exam',
-                title: 'Exam 1',
-                date: '2025-04-10',
-                description: 'Covering integration techniques and series'
-            }
-        ]
-    },
-    {
-        id: 3,
-        code: 'ENG 215',
-        name: 'Contemporary Literature',
-        instructor: 'Dr. Emily Martinez',
-        schedule: {
-            days: ['Monday', 'Wednesday', 'Friday'],
-            time: '1:00 PM - 1:50 PM',
-            location: 'Liberal Arts Building Room 201'
+        {
+            type: 'Assignment',
+            title: 'Programming Assignment 1',
+            date: '2025-03-15',
+            description: 'Basic programming concepts implementation',
+            estimatedTime: '4 hours'
         },
-        semester: 'spring2025',
-        assignments: [
-            {
-                type: 'Quiz',
-                title: 'Reading Comprehension Quiz',
-                date: '2025-03-05',
-                description: 'Quiz on The Great Gatsby chapters 1-3'
-            },
-            {
-                type: 'Assignment',
-                title: 'Literary Analysis Essay',
-                date: '2025-03-25',
-                description: '1500-word analysis of modernist themes'
-            },
-            {
-                type: 'Reading',
-                title: 'The Great Gatsby',
-                date: '2025-03-03',
-                description: 'Complete chapters 4-6 for discussion'
-            },
-            {
-                type: 'Exam',
-                title: 'Midterm Paper',
-                date: '2025-04-15',
-                description: 'Comparative analysis of two novels'
-            }
-        ]
-    }
-];
+        {
+            type: 'Reading',
+            title: 'Introduction to Algorithms',
+            date: '2025-03-08',
+            description: 'Read Chapter 3 before class',
+            estimatedTime: '2 hours'
+        },
+        {
+            type: 'Exam',
+            title: 'Midterm Examination',
+            date: '2025-04-05',
+            description: 'Covers all material from weeks 1-7',
+            estimatedTime: '3 hours'
+        }
+    ]
+};
 
 // Format date to a more readable format
 function formatDate(dateStr) {
@@ -292,19 +219,13 @@ function formatDate(dateStr) {
     });
 }
 
-// Show class assignments modal
-function showClassAssignments(classInfo) {
-    const modal = document.getElementById('assignmentsModal');
-    const modalContent = document.getElementById('assignmentsModalContent');
+// Display extracted assignments
+function displayExtractedAssignments(classInfo) {
+    const modal = document.getElementById('classesModal');
+    const modalContent = modal.querySelector('.modal-content');
 
-    // Group assignments by type
-    const assignmentsByType = classInfo.assignments.reduce((acc, assignment) => {
-        if (!acc[assignment.type]) {
-            acc[assignment.type] = [];
-        }
-        acc[assignment.type].push(assignment);
-        return acc;
-    }, {});
+    // Sort assignments by date
+    const sortedAssignments = [...classInfo.assignments].sort((a, b) => new Date(a.date) - new Date(b.date));
 
     modalContent.innerHTML = `
         <div class="modal-header assignments-header">
@@ -315,23 +236,78 @@ function showClassAssignments(classInfo) {
             <span class="close-modal">&times;</span>
         </div>
         <div class="modal-body assignments-body">
-            <div class="assignments-grid">
-                ${Object.entries(assignmentsByType).map(([type, assignments]) => `
-                    <div class="assignment-section">
-                        <h3 class="assignment-type">${type}s</h3>
-                        <div class="assignment-list">
-                            ${assignments.map(assignment => `
-                                <div class="assignment-card">
-                                    <div class="assignment-card-header">
+            <div class="class-schedule">
+                <div class="section-header">
+                    <h3>Class Schedule</h3>
+                    <button class="edit-button" id="editClassSchedule">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
+                        </svg>
+                        Edit
+                    </button>
+                </div>
+                <div class="schedule-grid">
+                    <div class="schedule-item">
+                        <span class="schedule-label">Term</span>
+                        <span class="schedule-value">${classInfo.schedule.term}</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-label">Days</span>
+                        <span class="schedule-value">${classInfo.schedule.days.join(', ')}</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-label">Time</span>
+                        <span class="schedule-value">${classInfo.schedule.time}</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-label">Location</span>
+                        <span class="schedule-value">${classInfo.schedule.location}</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-label">First Day</span>
+                        <span class="schedule-value">${formatDate(classInfo.schedule.firstDay)}</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span class="schedule-label">Last Day</span>
+                        <span class="schedule-value">${formatDate(classInfo.schedule.lastDay)}</span>
+                    </div>
+                </div>
+                <button id="addClassSchedule" class="secondary-button">Add Class Schedule to Calendar</button>
+            </div>
+            <div class="section-divider"></div>
+            <div class="assignments-section">
+                <div class="section-header">
+                    <h3>Tasks & Assignments</h3>
+                    <button class="edit-button" id="editAssignments">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
+                        </svg>
+                        Edit
+                    </button>
+                </div>
+                <div class="assignments-list">
+                    ${sortedAssignments.map(assignment => `
+                        <div class="assignment-item">
+                            <label class="assignment-checkbox">
+                                <input type="checkbox" checked>
+                                <div class="assignment-content">
+                                    <div class="assignment-main">
                                         <h4>${assignment.title}</h4>
-                                        <span class="due-date">Due: ${formatDate(assignment.date)}</span>
+                                        <span class="assignment-meta">
+                                            <span class="badge ${assignment.type.toLowerCase()}">${assignment.type}</span>
+                                            <span class="due-date">Due: ${formatDate(assignment.date)}</span>
+                                            <span class="estimated-time">${assignment.estimatedTime}</span>
+                                        </span>
                                     </div>
                                     <p class="assignment-description">${assignment.description}</p>
                                 </div>
-                            `).join('')}
+                            </label>
                         </div>
-                    </div>
-                `).join('')}
+                    `).join('')}
+                </div>
+                <div class="modal-actions">
+                    <button id="addToCalendar" class="primary-button">Add Selected Tasks to Calendar</button>
+                </div>
             </div>
         </div>
     `;
@@ -348,6 +324,28 @@ function showClassAssignments(classInfo) {
             modal.style.display = 'none';
         }
     };
+
+    // Handle adding tasks to calendar
+    const addButton = modalContent.querySelector('#addToCalendar');
+    addButton.addEventListener('click', () => {
+        const selectedTasks = Array.from(modalContent.querySelectorAll('input[type="checkbox"]:checked'))
+            .map(checkbox => {
+                const item = checkbox.closest('.assignment-item');
+                return {
+                    title: item.querySelector('h4').textContent,
+                    date: item.querySelector('.due-date').textContent.replace('Due: ', ''),
+                    type: item.querySelector('.badge').textContent,
+                    description: item.querySelector('.assignment-description').textContent,
+                    estimatedTime: item.querySelector('.estimated-time').textContent
+                };
+            });
+        
+        // Here you would integrate with your calendar system
+        console.log('Adding tasks:', selectedTasks);
+        modal.style.display = 'none';
+        document.getElementById('uploadStatus').textContent = 'Tasks successfully added to your calendar!';
+        document.getElementById('uploadStatus').style.color = '#16a34a';
+    });
 }
 
 // Create class card element
@@ -409,12 +407,6 @@ function initUploadPage() {
     const fileInput = document.querySelector('.file-input');
     const submitBtn = document.getElementById('submitBtn');
     const statusDiv = document.getElementById('uploadStatus');
-    const modal = document.getElementById('classesModal');
-    const closeBtn = modal.querySelector('.close-modal');
-    const searchInput = document.getElementById('classSearch');
-    const semesterFilter = document.getElementById('semesterFilter');
-    const confirmBtn = document.getElementById('confirmClasses');
-    const editBtn = document.getElementById('editClasses');
 
     fileInput.addEventListener('change', (e) => {
         submitBtn.disabled = !e.target.files.length;
@@ -422,44 +414,8 @@ function initUploadPage() {
 
     submitBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        // Show the modal with extracted classes
-        modal.style.display = 'block';
-        updateClassesList();
-    });
-
-    // Close modal when clicking X button
-    closeBtn.addEventListener('click', () => {
-        modal.style.display = 'none';
-    });
-
-    // Close modal when clicking outside
-    window.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.style.display = 'none';
-        }
-    });
-
-    // Handle search and filter
-    searchInput.addEventListener('input', (e) => {
-        updateClassesList(e.target.value, semesterFilter.value);
-    });
-
-    semesterFilter.addEventListener('change', (e) => {
-        updateClassesList(searchInput.value, e.target.value);
-    });
-
-    // Handle confirm and edit buttons
-    confirmBtn.addEventListener('click', () => {
-        modal.style.display = 'none';
-        statusDiv.textContent = 'Classes successfully added to your calendar!';
-        statusDiv.style.color = '#16a34a';
-        fileInput.value = '';
-        submitBtn.disabled = true;
-    });
-
-    editBtn.addEventListener('click', () => {
-        statusDiv.textContent = 'Edit mode enabled. Click on any class to modify its details.';
-        statusDiv.style.color = '#4f46e5';
+        // Show the modal with extracted assignments
+        displayExtractedAssignments(sampleClass);
     });
 }
 
