@@ -34,33 +34,58 @@
         <div class="modal-content">
             <h2>Extracted Class Information</h2>
             <div class="class-info">
-                <h3>CS 101: Introduction to Computer Science</h3>
+                <div class="section-header">
+                    <h3>CS 101: Introduction to Computer Science</h3>
+                    <button class="btn btn-secondary" onclick="alert('Feature coming soon!')">Edit Class</button>
+                </div>
                 <p><strong>Instructor:</strong> Dr. Jane Smith</p>
                 <p><strong>Schedule:</strong> Mon/Wed/Fri 10:00 AM - 11:20 AM</p>
                 <p><strong>Location:</strong> Science Building, Room 405</p>
             </div>
             <div class="assignments-section">
                 <h3>Assignments & Due Dates</h3>
+                <div class="section-header">
+                    <h3>Assignments & Due Dates</h3>
+                    <button class="btn btn-secondary" onclick="alert('Feature coming soon!')">Edit Tasks</button>
+                </div>
                 <div class="assignments-list">
                     <div class="assignment-item">
-                        <h4>Programming Assignment 1</h4>
+                        <div class="assignment-header">
+                            <label class="checkbox-container">
+                                <input type="checkbox" checked>
+                                <span class="checkmark"></span>
+                            </label>
+                            <h4>Programming Assignment 1</h4>
+                        </div>
                         <p>Due: March 1, 2025</p>
                         <p>Basic Python programming exercises</p>
                     </div>
                     <div class="assignment-item">
-                        <h4>Midterm Project</h4>
+                        <div class="assignment-header">
+                            <label class="checkbox-container">
+                                <input type="checkbox" checked>
+                                <span class="checkmark"></span>
+                            </label>
+                            <h4>Midterm Project</h4>
+                        </div>
                         <p>Due: March 15, 2025</p>
                         <p>Build a simple command-line application</p>
                     </div>
                     <div class="assignment-item">
-                        <h4>Final Project</h4>
+                        <div class="assignment-header">
+                            <label class="checkbox-container">
+                                <input type="checkbox" checked>
+                                <span class="checkmark"></span>
+                            </label>
+                            <h4>Final Project</h4>
+                        </div>
                         <p>Due: April 30, 2025</p>
                         <p>Develop a web-based application</p>
                     </div>
                 </div>
             </div>
             <div class="modal-actions">
-                <button class="btn btn-primary" onclick="document.getElementById('classesModal').style.display='none'">Close</button>
+                <button class="btn btn-primary" onclick="alert('Feature coming soon!'); document.getElementById('classesModal').style.display='none'">Add to Calendar</button>
             </div>
         </div>
     </div>
@@ -99,6 +124,84 @@
         }
 
         /* Assignment styles */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .btn-secondary {
+            background: var(--background-color);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+
+        .btn-secondary:hover {
+            background: var(--border-color);
+        }
+
+        .checkbox-container {
+            display: inline-block;
+            position: relative;
+            padding-left: 25px;
+            margin-right: 12px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checkbox-container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 18px;
+            width: 18px;
+            background-color: var(--background-color);
+            border: 2px solid var(--border-color);
+            border-radius: 4px;
+        }
+
+        .checkbox-container input:checked ~ .checkmark {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        .checkbox-container input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        .checkbox-container .checkmark:after {
+            left: 5px;
+            top: 2px;
+            width: 4px;
+            height: 8px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .assignment-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
         .assignment-item {
             background: var(--background-color);
             padding: 1rem;
