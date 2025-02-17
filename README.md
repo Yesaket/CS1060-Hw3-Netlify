@@ -1,6 +1,4 @@
-# StudyFlow - Student Productivity Web App
-
-![StudyFlow Interface](https://via.placeholder.com/800x400.png?text=StudyFlow+Screenshot)
+# Kairos - Student Productivity Web App
 
 A modern web interface for managing student tasks, schedules, and study sessions.
 
