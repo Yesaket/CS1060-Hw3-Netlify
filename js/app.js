@@ -1,7 +1,6 @@
 // Study session functionality
 function showComingSoonMessage() {
-    const modal = document.getElementById('comingSoonModal');
-    modal.style.display = 'flex';
+    alert('Feature coming soon!');
 }
 
 function closeModal(modalId) {
