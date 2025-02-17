@@ -306,7 +306,7 @@ function displayExtractedAssignments(classInfo) {
                 </div>
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <button id="addClassSchedule" class="secondary-button">Add Class Schedule to Calendar</button>
-                    <span id="scheduleConfirmation" style="display: none; color: green;">Added to calendar!</span>
+                    <span id="scheduleConfirmation" style="display: none; color: green;">Feature Coming Soon!</span>
                 </div>
             </div>
             <div class="section-divider"></div>
@@ -378,7 +378,7 @@ function displayExtractedAssignments(classInfo) {
         // Here you would integrate with your calendar system
         console.log('Adding tasks:', selectedTasks);
         modal.style.display = 'none';
-        document.getElementById('uploadStatus').textContent = 'Tasks successfully added to your calendar!';
+        document.getElementById('uploadStatus').textContent = 'Tasks successfully added to your calendar! (Feature coming soon)';
         document.getElementById('uploadStatus').style.color = '#16a34a';
     });
 }
@@ -515,17 +515,21 @@ function handleExportOption(option) {
 
 function importFromUrl() {
     const url = document.getElementById('importUrl').value;
-    // Here you would implement the actual calendar import logic
-    console.log('Importing calendar from URL:', url);
+    if (!url) {
+        alert('Please enter a URL');
+        return;
+    }
+    alert('Feature coming soon!');
     closeModal('importModal');
 }
 
 function importFromFile() {
     const file = document.getElementById('calendarFile').files[0];
     if (file) {
-        // Here you would implement the actual file import logic
-        console.log('Importing calendar from file:', file.name);
+        alert('Feature coming soon!');
         closeModal('importModal');
+    } else {
+        alert('Please select a file');
     }
 }
 
